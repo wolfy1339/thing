@@ -1,0 +1,25 @@
+# thing
+"thing" python database using dict's
+
+
+usage:
+
+```
+import thing
+tdb = thing.start("path/to/db.thing", secret)
+
+tdb['demo'] = "Thing is awesome!"
+
+thing.save(tdb, "path/to/db.thing", secret)
+```
+
+"secret" is a 32 byte string used to decrypt the file; it is optional but must be used every time after used to save it once.
+
+Opon first use you will need to do:
+
+```
+import thing
+secret = "<secret here>"
+thing.save({}, "path/to/db.thing", secret)
+```
+
