@@ -23,3 +23,12 @@ secret = "<secret here>"
 thing.save({}, "path/to/db.thing", secret)
 ```
 
+how to install:
+
+```
+git clone https://github.com/ItsLukeJames/thing.git thing
+cd thing
+python setup.py install
+```
+
+https://pypi.python.org/pypi/thing-db
