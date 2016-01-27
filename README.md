@@ -6,6 +6,7 @@ usage:
 
 ```
 import thing
+secret = "<secret here>"
 tdb = thing.start("path/to/db.thing", secret)
 
 tdb['demo'] = "Thing is awesome!"
