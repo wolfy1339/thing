@@ -32,4 +32,4 @@ cd thing
 python setup.py install
 ```
 
-https://pypi.python.org/pypi/thing-db
+https://pypi.python.org/pypi/thingdb
