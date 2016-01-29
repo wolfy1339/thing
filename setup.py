@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
-setup(name='thing-db',
-      version='0.2.1',
+setup(name='thingdb',
+      version='0.2.2',
       description="Python database using dict's",
       url='https://github.com/ItsLukeJames/thing',
       author='Luke James',
