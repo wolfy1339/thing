@@ -11,7 +11,7 @@
 #   |  '.'| |     | |    |  |   |  | ||     || 
 #   |   / | '.    | '.   |  |   |  | \'. __//  
 #   `'-'  '---'   '---'  '--'   '--'  `'---' 
-#"thing" database - github/ItsLukeJames
+#"thing" database - github/itslukej
 
 #Imports
 import base64
