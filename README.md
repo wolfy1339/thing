@@ -1,5 +1,5 @@
 # thing
-"thing" python database using dict's
+"thing" python database using dicts
 
 
 usage:
