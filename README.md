@@ -24,7 +24,7 @@ secret = "<secret here>"
 thing.save({}, "path/to/db.thing", secret)
 ```
 
-how to install:
+installation:
 
 ```
 git clone https://github.com/ItsLukeJames/thing.git thing
