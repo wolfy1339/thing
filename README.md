@@ -1,5 +1,5 @@
 # thing
-"thing" python database using dicts
+"thing" python database using dicts [![Codacy Badge](https://api.codacy.com/project/badge/grade/83fa6dc499a54f2c9cf575c14eac6a07)](https://www.codacy.com/app/me_64/thing)
 
 
 usage:
