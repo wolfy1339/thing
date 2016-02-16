@@ -5,7 +5,7 @@
 usage:
 
 ```
-import thing
+import thingdb
 secret = "<secret here>"
 tdb = thing.start("path/to/db.thing", secret)
 
@@ -19,7 +19,7 @@ thing.save(tdb, "path/to/db.thing", secret)
 Upon first use you will need to do:
 
 ```
-import thing
+import thingdb
 secret = "<secret here>"
 thing.save({}, "path/to/db.thing", secret)
 ```
