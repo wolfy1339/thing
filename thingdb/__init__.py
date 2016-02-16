@@ -34,16 +34,16 @@ def decrypt(string, secret):
 
 
 
-def start(file="db.thing", secret="gkgkjlekgjlrkejglkrfb,mfdnemfn,d"):
-    f = open(file, "r")
+def start(filename="db.thing", secret="gkgkjlekgjlrkejglkrfb,mfdnemfn,d"):
+    f = open(filename, "r")
     encrypted = f.read()
     unencrypted = decrypt(encrypted, secret)
     return ast.literal_eval(unencrypted)
 
-def save(to_save, file="db.thing", secret="gkgkjlekgjlrkejglkrfb,mfdnemfn,d"):
+def save(to_save, filename="db.thing", secret="gkgkjlekgjlrkejglkrfb,mfdnemfn,d"):
     string = str(to_save)
     encrypted = encrypt(string, secret)
-    f = open(file, "w")
+    f = open(filename, "w")
     f.write(encrypted)
     f.close()
     return to_save
