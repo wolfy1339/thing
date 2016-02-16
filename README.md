@@ -27,7 +27,7 @@ thing.save({}, "path/to/db.thing", secret)
 installation:
 
 ```
-git clone https://github.com/ItsLukeJames/thing.git thing
+git clone https://github.com/dev-zz/thing.git thing
 cd thing
 python setup.py install
 ```
