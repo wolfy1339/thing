@@ -1,15 +1,15 @@
 #
 #
-#           .        .--.   _..._ 
+#           .        .--.   _..._
 #         .'|        |__| .'     '.   .--./)
 #     .| <  |        .--..   .-.   . /.''\\
 #   .' |_ | |        |  ||  '   '  || |  | |
 # .'     || | .'''-. |  ||  |   |  | \`-' /
 #'--.  .-'| |/.'''. \|  ||  |   |  | /("'`
 #   |  |  |  /    | ||  ||  |   |  | \ '---.
-#   |  |  | |     | ||__||  |   |  |  /'""'.\ 
+#   |  |  | |     | ||__||  |   |  |  /'""'.\
 #   |  '.'| |     | |    |  |   |  | ||     ||
-#   |   / | '.    | '.   |  |   |  | \'. __// 
+#   |   / | '.    | '.   |  |   |  | \'. __//
 #   `'-'  '---'   '---'  '--'   '--'  `'---'
 #"thing" database - github/itslukej
 
@@ -39,14 +39,14 @@ def start(file="db.thing", secret="gkgkjlekgjlrkejglkrfb,mfdnemfn,d"):
     encrypted = f.read()
     unencrypted = decrypt(encrypted, secret)
     return ast.literal_eval(unencrypted)
-    
-def save(dict, file="db.thing", secret="gkgkjlekgjlrkejglkrfb,mfdnemfn,d"):
-    string = str(dict)
+
+def save(to_save, file="db.thing", secret="gkgkjlekgjlrkejglkrfb,mfdnemfn,d"):
+    string = str(to_save)
     encrypted = encrypt(string, secret)
     f = open(file, "w")
     f.write(encrypted)
     f.close()
-    return dict
+    return to_save
     
     
     
