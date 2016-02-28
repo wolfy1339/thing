@@ -32,8 +32,6 @@ def decrypt(string, secret):
     decoded = DecodeAES(AES.new(secret),string)
     return decoded
 
-
-
 def start(filename="db.thing", secret="gkgkjlekgjlrkejglkrfb,mfdnemfn,d"):
     f = open(filename, "r")
     encrypted = f.read()
@@ -47,6 +45,3 @@ def save(to_save, filename="db.thing", secret="gkgkjlekgjlrkejglkrfb,mfdnemfn,d"
     f.write(encrypted)
     f.close()
     return to_save
-    
-    
-    
