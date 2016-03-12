@@ -33,3 +33,7 @@ python setup.py install
 ```
 
 https://pypi.python.org/pypi/thingdb
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/dev-zz/thing/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
