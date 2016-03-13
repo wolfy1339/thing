@@ -8,4 +8,5 @@ setup(name='thingdb',
       author_email='me@lukej.me',
       license='GNU',
       packages=find_packages(),
+      install_requires=['pycrypto'],
       zip_safe=False)
