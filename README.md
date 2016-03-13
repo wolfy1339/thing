@@ -1,5 +1,5 @@
 # thing
-"thing" python database using dicts [![Codacy Badge](https://api.codacy.com/project/badge/grade/83fa6dc499a54f2c9cf575c14eac6a07)] (https://www.codacy.com/app/me_64/thing) [![PyPI](https://img.shields.io/pypi/dm/thingdb.svg)](https://pypi.python.org/pypi/thingdb) [![PyPI](https://img.shields.io/pypi/status/thingdb.svg)](https://pypi.python.org/pypi/thingdb) [![Github All Releases](https://img.shields.io/github/downloads/dev-zz/thing/total.svg)](https://github.com/dev-zz/thing)
+"thing" python database using dicts [![Codacy Badge](https://api.codacy.com/project/badge/grade/83fa6dc499a54f2c9cf575c14eac6a07)] (https://www.codacy.com/app/me_64/thing) [![PyPI](https://img.shields.io/pypi/dev-zz/thingdb.svg)](https://pypi.python.org/pypi/thingdb)[![Github All Releases](https://img.shields.io/github/downloads/dev-zz/thing/total.svg)](https://github.com/dev-zz/thing)
 
 
 usage:
