@@ -6,30 +6,22 @@ usage:
 
 ```
 import thingdb
-secret = "<secret here>"
-tdb = thingdb.start("path/to/db.thing", secret)
+tdb = thingdb.thing("path/to/db.thing", "passphrase")
 
-tdb['demo'] = "Thing is awesome!"
+tdb.dict['demo'] = "Thing is awesome!"
 
-thingdb.save(tdb, "path/to/db.thing", secret)
+tdb.save()
 ```
-
-"secret" is a 32 byte string used to decrypt the file; it is optional but must be used every time after used to save it once.
-
-Upon first use you will need to do:
-
-```
-import thingdb
-secret = "<secret here>"
-thingdb.save({}, "path/to/db.thing", secret)
-```
-
 installation:
 
 ```
-git clone https://github.com/dev-zz/thing.git thing
-cd thing
-python setup.py install
+sudo pip install thingdb
+```
+
+installation(dev):
+
+```
+sudo pip install git+https://github.com/dev-zz/thing
 ```
 
 https://pypi.python.org/pypi/thingdb
