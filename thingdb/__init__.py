@@ -60,3 +60,18 @@ class thing(object):
         
     def has_key(self, key):
         return key in self.dict
+        
+    def __getitem__(self, key):
+        return self.dict[key]
+
+    def __setitem__(self, key, value):
+        self.dict[key] = value
+
+    def __delitem__(self, key):
+        del self.dict[key]
+        
+    def __contains__(self, key):
+        return key in self.dict
+        
+    def __len__(self):
+        return len(self.dict)
