@@ -21,8 +21,8 @@ class crypt(object):
         self.BLOCK_SIZE = 32
         self.PADDING = '{'
         if sys.version_info >= (3,0):
-            self.pad = lambda s: s + (BLOCK_SIZE - len(s.encode()) % BLOCK_SIZE) * PADDING #py3
-            self.DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).decode().rstrip(PADDING) #py3
+            self.pad = lambda s: s + (self.BLOCK_SIZE - len(s.encode()) % self.BLOCK_SIZE) * self.PADDING #py3
+            self.DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).decode().rstrip(self.PADDING) #py3
         else:
             self.pad = lambda s: s + (self.BLOCK_SIZE - len(s) % self.BLOCK_SIZE) * self.PADDING #py2
             self.DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(self.PADDING) #py2
