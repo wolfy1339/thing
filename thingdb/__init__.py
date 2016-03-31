@@ -14,15 +14,19 @@
 #"thing" database - github/itslukej
 
 #Imports
-import base64, hashlib, ast, os
+import base64, hashlib, ast, os, sys
 from Crypto.Cipher import AES
 class crypt(object):
     def __init__(self):
         self.BLOCK_SIZE = 32
         self.PADDING = '{'
-        self.pad = lambda s: s + (self.BLOCK_SIZE - len(s) % self.BLOCK_SIZE) * self.PADDING
+        if sys.version_info >= (3,0):
+            self.pad = lambda s: s + (BLOCK_SIZE - len(s.encode()) % BLOCK_SIZE) * PADDING #py3
+            self.DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).decode().rstrip(PADDING) #py3
+        else:
+            self.pad = lambda s: s + (self.BLOCK_SIZE - len(s) % self.BLOCK_SIZE) * self.PADDING #py2
+            self.DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(self.PADDING) #py2
         self.EncodeAES = lambda c, s: base64.b64encode(c.encrypt(self.pad(s)))
-        self.DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(self.PADDING)
     def encrypt(self, string, secret):
         secret = hashlib.sha224(secret).hexdigest()[:32]
         encoded = self.EncodeAES(AES.new(secret), string)
@@ -51,7 +55,10 @@ class thing(object):
         string = str(self.dict)
         encrypted = self.crypt_wrapper.encrypt(string, self.secret)
         f = open(self.filename, "w")
-        f.write(encrypted)
+        if sys.version_info >= (3,0):
+            f.write(encrypted.decode())
+        else:
+            f.write(encrypted)
         f.close()
         return self.dict
     #other stuff
