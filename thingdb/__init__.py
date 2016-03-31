@@ -46,7 +46,10 @@ class thing(object):
         #
         if not os.path.isfile(self.filename):
             f = open(self.filename, "w+")
-            f.write(self.crypt_wrapper.encrypt("{}", self.secret))
+            if sys.version_info >= (3,0):
+                f.write(self.crypt_wrapper.encrypt("{}", self.secret).decode())
+            else:
+                f.write(self.crypt_wrapper.encrypt("{}", self.secret))
             f.close()
         f = open(filename, "r")
         unencrypted = self.crypt_wrapper.decrypt(f.read(), secret)
