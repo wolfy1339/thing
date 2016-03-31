@@ -28,12 +28,12 @@ class crypt(object):
             self.DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(self.PADDING) #py2
         self.EncodeAES = lambda c, s: base64.b64encode(c.encrypt(self.pad(s)))
     def encrypt(self, string, secret):
-        secret = hashlib.sha224(secret).hexdigest()[:32]
+        secret = hashlib.sha224(secret.encode()).hexdigest()[:32]
         encoded = self.EncodeAES(AES.new(secret), string)
         return encoded
     
     def decrypt(self, string, secret):
-        secret = hashlib.sha224(secret).hexdigest()[:32]
+        secret = hashlib.sha224(secret.encode()).hexdigest()[:32]
         decoded = self.DecodeAES(AES.new(secret),string)
         return decoded
 
