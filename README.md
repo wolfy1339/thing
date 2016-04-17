@@ -8,7 +8,7 @@ usage:
 import thingdb
 tdb = thingdb.thing("path/to/db.thing", "passphrase")
 
-tdb.dict['demo'] = "Thing is awesome!"
+tdb['demo'] = "Thing is awesome!"
 
 tdb.save()
 ```
