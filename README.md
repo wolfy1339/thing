@@ -6,11 +6,15 @@ usage:
 
 ```
 import thingdb
-tdb = thingdb.thing("path/to/db.thing", "passphrase")
+tdb = thingdb.thing("path/to/db")
 
 tdb['demo'] = "Thing is awesome!"
 
-tdb.save()
+tdb.sync()
+
+#When finished with a DB
+
+tdb.close()
 ```
 installation:
 
