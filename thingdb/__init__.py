@@ -12,76 +12,78 @@
 #   |   / | '.    | '.   |  |   |  | \'. __//
 #   `'-'  '---'   '---'  '--'   '--'  `'---'
 #"thing" database - github/itslukej
-
-#Imports
-import base64, hashlib, ast, os, sys
-from Crypto.Cipher import AES
-class crypt(object):
-    def __init__(self):
-        self.BLOCK_SIZE = 32
-        self.PADDING = '{'
-        if sys.version_info >= (3,0):
-            self.pad = lambda s: s + (self.BLOCK_SIZE - len(s.encode()) % self.BLOCK_SIZE) * self.PADDING #py3
-            self.DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).decode().rstrip(self.PADDING) #py3
-        else:
-            self.pad = lambda s: s + (self.BLOCK_SIZE - len(s) % self.BLOCK_SIZE) * self.PADDING #py2
-            self.DecodeAES = lambda c, e: c.decrypt(base64.b64decode(e)).rstrip(self.PADDING) #py2
-        self.EncodeAES = lambda c, s: base64.b64encode(c.encrypt(self.pad(s)))
-    def encrypt(self, string, secret):
-        secret = hashlib.sha224(secret.encode()).hexdigest()[:32]
-        encoded = self.EncodeAES(AES.new(secret), string)
-        return encoded
+try:
+    import anydbm
+except ImportError:
+    import dbm as anydbm
+try:
+    from UserDict import DictMixin
+except ImportError:
+    from collections import MutableMapping as DictMixin
     
-    def decrypt(self, string, secret):
-        secret = hashlib.sha224(secret.encode()).hexdigest()[:32]
-        decoded = self.DecodeAES(AES.new(secret),string)
-        return decoded
+import sys
 
-class thing(object):
-    def __init__(self, filename="db.thing", secret="password"):
-        #specify things
-        self.crypt_wrapper = crypt()
-        self.filename = filename
-        self.secret = secret
-        #
-        if not os.path.isfile(self.filename):
-            f = open(self.filename, "w+")
-            if sys.version_info >= (3,0):
-                f.write(self.crypt_wrapper.encrypt("{}", self.secret).decode())
-            else:
-                f.write(self.crypt_wrapper.encrypt("{}", self.secret))
-            f.close()
-        f = open(filename, "r")
-        unencrypted = self.crypt_wrapper.decrypt(f.read(), secret)
-        self.dict = ast.literal_eval(unencrypted)
-    def save(self):
-        string = str(self.dict)
-        encrypted = self.crypt_wrapper.encrypt(string, self.secret)
-        f = open(self.filename, "w")
-        if sys.version_info >= (3,0):
-            f.write(encrypted.decode())
-        else:
-            f.write(encrypted)
-        f.close()
-        return self.dict
-    #other stuff
+class _ClosedDict(DictMixin):
+    """Returns ValueError when trying to get/set/del item"""
+
+    def closed(self, *args):
+        raise ValueError('invalid operation on closed thing')
+    __len__ = __getitem__ = __setitem__ = __delitem__ = __iter__ = keys = closed
+
+    def __repr__(self):
+        return '<Closed Dictionary>'
+
+class _Wrapper(DictMixin):
+    """Main wrapper for thingdb"""
+    def __init__(self, dict):
+        self.dict = dict
+        self.cache={}
     def keys(self):
         return self.dict.keys()
-        
     def has_key(self, key):
         return key in self.dict
-        
     def __getitem__(self, key):
-        return self.dict[key]
-
+        try:
+            value = self.cache[key]
+        except KeyError:
+            value = self.dict[key]
+        return value
     def __setitem__(self, key, value):
-        self.dict[key] = value
-
+        self.cache[key] = value
     def __delitem__(self, key):
-        del self.dict[key]
-        
+        try:
+            del self.dict[key]
+        except KeyError:
+            del self.cache[key]
     def __contains__(self, key):
         return key in self.dict
-        
     def __len__(self):
         return len(self.dict)
+    def __iter__(self):
+        if sys.version_info >= (3, 0):
+            for k,v in self.dict.items():
+                yield k,v
+        else:
+            for k,v in self.dict.iteritems():
+                yield k,v
+        
+class _DB(_Wrapper):
+    def __init__(self, filename, flag="c"):
+        _Wrapper.__init__(self, anydbm.open(filename, flag))
+    def sync(self):
+        if sys.version_info >= (3, 0):
+            for key, entry in self.cache.items():
+                self.dict[key] = entry
+        else:
+            for key, entry in self.cache.iteritems():
+                self.dict[key] = entry
+        if hasattr(self.dict, 'save'):
+            self.dict.save()
+    def close(self):
+        self.sync()
+        self.dict.close()
+        self.dict = _ClosedDict()
+        
+        
+def thing(filename, flag="c"):
+    return _DB(filename, flag)
