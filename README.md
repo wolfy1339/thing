@@ -25,7 +25,7 @@ sudo pip install thingdb
 installation(dev):
 
 ```
-sudo pip install git+https://github.com/dev-zz/thing
+sudo pip install git+https://github.com/Azure-Developments/thing
 ```
 
 https://pypi.python.org/pypi/thingdb
