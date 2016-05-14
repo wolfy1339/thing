@@ -20,7 +20,14 @@ try:
     from UserDict import DictMixin
 except ImportError:
     from collections import MutableMapping as DictMixin
-    
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
+try:
+    from StringIO import StringIO as BytesIO
+except ImportError:
+    from io import BytesIO
 import sys
 
 class _ClosedDict(DictMixin):
@@ -47,9 +54,12 @@ class _Wrapper(DictMixin):
             value = self.cache[key]
         except KeyError:
             value = self.dict[key]
-        return value
+        return pickle.Unpickler(BytesIO(value)).load()
     def __setitem__(self, key, value):
-        self.cache[key] = value
+        f = BytesIO()
+        p = pickle.Pickler(f)
+        p.dump(value)
+        self.cache[key] = f.getvalue()
     def __delitem__(self, key):
         try:
             del self.dict[key]
@@ -60,29 +70,26 @@ class _Wrapper(DictMixin):
     def __len__(self):
         return len(self.dict)
     def __iter__(self):
-        if sys.version_info >= (3, 0):
-            for k,v in self.dict.items():
-                yield k,v
-        else:
-            for k,v in self.dict.iteritems():
-                yield k,v
-        
+        for k in self.dict.keys():
+            return k,pickle.Unpickler(BytesIO(self.dict[k])).load()
+    
 class _DB(_Wrapper):
     def __init__(self, filename, flag="c"):
-        _Wrapper.__init__(self, anydbm.open(filename, flag))
+        database = anydbm.open(filename, flag)
+        self.filename=filename
+        self.flags = flag
+        _Wrapper.__init__(self, database)
     def sync(self):
-        if sys.version_info >= (3, 0):
-            for key, entry in self.cache.items():
-                self.dict[key] = entry
-        else:
-            for key, entry in self.cache.iteritems():
-                self.dict[key] = entry
+        for key, entry in self.cache.items():
+            self.dict[key] = entry
         if hasattr(self.dict, 'save'):
             self.dict.save()
     def close(self):
         self.sync()
         self.dict.close()
         self.dict = _ClosedDict()
+    def __repr__(self):
+        return "thingDB({0})".format(self.filename)
         
         
 def thing(filename, flag="c"):
