@@ -13,10 +13,6 @@
 #   `'-'  '---'   '---'  '--'   '--'  `'---'
 #"thing" database - github/itslukej
 try:
-    import anydbm
-except ImportError:
-    import dbm as anydbm
-try:
     from UserDict import DictMixin
 except ImportError:
     from collections import MutableMapping as DictMixin
@@ -24,11 +20,7 @@ try:
     import cPickle as pickle
 except ImportError:
     import pickle
-try:
-    from StringIO import StringIO as BytesIO
-except ImportError:
-    from io import BytesIO
-import sys
+import os
 
 class _ClosedDict(DictMixin):
     """Returns ValueError when trying to get/set/del item"""
@@ -44,49 +36,38 @@ class _Wrapper(DictMixin):
     """Main wrapper for thingdb"""
     def __init__(self, dict):
         self.dict = dict
-        self.cache={}
     def keys(self):
         return self.dict.keys()
     def has_key(self, key):
         return key in self.dict
     def __getitem__(self, key):
-        try:
-            value = self.cache[key]
-        except KeyError:
-            value = self.dict[key]
-        return pickle.Unpickler(BytesIO(value)).load()
+        return self.dict[key]
     def __setitem__(self, key, value):
-        f = BytesIO()
-        p = pickle.Pickler(f)
-        p.dump(value)
-        self.cache[key] = f.getvalue()
+        self.dict[key] = value
     def __delitem__(self, key):
-        try:
-            del self.dict[key]
-        except KeyError:
-            del self.cache[key]
+        del self.dict[key]
     def __contains__(self, key):
         return key in self.dict
     def __len__(self):
         return len(self.dict)
     def __iter__(self):
         for k in self.dict.keys():
-            return k,pickle.Unpickler(BytesIO(self.dict[k])).load()
+            return k,self.dict[k]
+    def __repr__(self):
+        return str(self.dict)
     
 class _DB(_Wrapper):
     def __init__(self, filename, flag="c"):
-        database = anydbm.open(filename, flag)
+        if not os.path.isfile(filename):
+            pickle.dump({}, open(filename, "wb+"))
+        database = pickle.load(open(filename, "rb"))
         self.filename=filename
         self.flags = flag
         _Wrapper.__init__(self, database)
     def sync(self):
-        for key, entry in self.cache.items():
-            self.dict[key] = entry
-        if hasattr(self.dict, 'save'):
-            self.dict.save()
+        pickle.dump(self.dict, open(self.filename, "wb"))
     def close(self):
-        self.sync()
-        self.dict.close()
+        pickle.dump(self.dict, open(self.filename, "wb"))
         self.dict = _ClosedDict()
     def __repr__(self):
         return "thingDB({0})".format(self.filename)
