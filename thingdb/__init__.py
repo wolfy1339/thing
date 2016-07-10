@@ -65,10 +65,12 @@ class _DB(_Wrapper):
         self.flags = flag
         _Wrapper.__init__(self, database)
     def sync(self):
-        pickle.dump(self.dict, open(self.filename, "wb"))
+        if type(self.dict) is not _ClosedDict:
+            pickle.dump(self.dict, open(self.filename, "wb"))
     def close(self):
-        pickle.dump(self.dict, open(self.filename, "wb"))
-        self.dict = _ClosedDict()
+        if type(self.dict) is not _ClosedDict:
+            pickle.dump(self.dict, open(self.filename, "wb"))
+            self.dict = _ClosedDict()
     def __repr__(self):
         return "thingDB({0})".format(self.filename)
         
