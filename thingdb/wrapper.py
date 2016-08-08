@@ -11,7 +11,7 @@ class Wrapper(DictMixin):
         self.dict = dict
         self.cache={}
     def keys(self):
-        return self.dict.keys()+self.cache.keys()
+        return list(self.dict.keys())+self.cache.keys()
     def has_key(self, key):
         return key in self.dict
     def __getitem__(self, key):
