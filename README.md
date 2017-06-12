@@ -1,10 +1,10 @@
 # thing4
-"thing" python database using dicts [![Codacy Badge](https://api.codacy.com/project/badge/grade/83fa6dc499a54f2c9cf575c14eac6a07)] (https://www.codacy.com/app/me_64/thing) [![PyPI](https://img.shields.io/pypi/dm/thingdb.svg)](https://pypi.python.org/pypi/thingdb)
+"thing" python database using dicts [![Codacy Badge](https://api.codacy.com/project/badge/grade/83fa6dc499a54f2c9cf575c14eac6a07)](https://www.codacy.com/app/me_64/thing) [![PyPI](https://img.shields.io/pypi/dm/thingdb.svg)](https://pypi.python.org/pypi/thingdb)
 
 
-usage:
+## Usage:
 
-```
+```python
 import thingdb
 tdb = thingdb.thing("path/to/db")
 
@@ -16,13 +16,13 @@ tdb.sync()
 
 tdb.close()
 ```
-installation:
+## Installation:
 
 ```
 sudo pip install thingdb
 ```
 
-installation(dev):
+### Development version:
 
 ```
 sudo pip install git+https://github.com/Azure-Developments/thing
